@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'addItem.dart';
+import 'additem.dart';
 import 'recipes.dart';
+import 'item_details.dart';
+import 'smart_alerts.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -56,10 +58,12 @@ class _HomeState extends State<Home> {
     }
   }
 
+  // ---------------- NAVIGATION ----------------
+
   void goToAddItem() {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (_) => const addItem()),
+      MaterialPageRoute(builder: (_) => const AddItem()),
     );
   }
 
@@ -70,89 +74,14 @@ class _HomeState extends State<Home> {
     );
   }
 
-  void openNotifications() {
-    final overlay = Overlay.of(context);
-    if (overlay == null) return;
-
-    if (_notificationEntry != null) {
-      _notificationEntry!.remove();
-      _notificationEntry = null;
-      return;
-    }
-
-    final filtered = items.where((item) {
-      final status = item["status"] ?? "";
-      return status == "soon" || status == "expired";
-    }).toList();
-
-    _notificationEntry = OverlayEntry(
-      builder: (_) => Positioned(
-        top: 80,
-        right: 16,
-        child: Material(
-          color: Colors.transparent,
-          child: Container(
-            width: 270,
-            padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(14),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.15),
-                  blurRadius: 12,
-                )
-              ],
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const Text("🔔 Alerts",
-                    style: TextStyle(fontWeight: FontWeight.bold)),
-                const SizedBox(height: 10),
-
-                if (filtered.isEmpty)
-                  const Text("No alerts 🎉")
-                else
-                  ...filtered.map((item) {
-                    final status = item["status"] ?? "";
-                    final isSoon = status == "soon";
-
-                    final color = isSoon
-                        ? const Color(0xFFFFB300)
-                        : const Color(0xFFD50000);
-
-                    return Container(
-                      margin: const EdgeInsets.only(bottom: 8),
-                      padding: const EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        color: color.withOpacity(0.12),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Row(
-                        children: [
-                          Icon(Icons.circle, size: 8, color: color),
-                          const SizedBox(width: 8),
-                          Expanded(
-                            child: Text(
-                              "${item["name"] ?? ""} → "
-                              "${isSoon ? "Expiring" : "Expired"} on "
-                              "${item["expiry"] ?? "--"}",
-                            ),
-                          ),
-                        ],
-                      ),
-                    );
-                  }),
-              ],
-            ),
-          ),
-        ),
-      ),
+  void goToAlerts() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (_) => const SmartAlerts()),
     );
-
-    overlay.insert(_notificationEntry!);
   }
+
+  // ---------------- PROFILE ----------------
 
   void openProfile() {
     showModalBottomSheet(
@@ -188,85 +117,133 @@ class _HomeState extends State<Home> {
     );
   }
 
-  void showItemDetails(Map<String, String?> item) {
-    showDialog(
-      context: context,
-      builder: (_) {
-        return AlertDialog(
-          title: Text(item["name"] ?? ""),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text("Produced: ${item["produced"] ?? "--"}"),
-              Text("Added: ${item["added"] ?? "--"}"),
-              Text("Expires: ${item["expiry"] ?? "--"}"),
-            ],
-          ),
-        );
-      },
-    );
-  }
+  // ---------------- SMART ALERTS OVERLAY ----------------
 
-  // 🖱 HOVER CARD WRAPPER (NEW FEATURE)
-  Widget buildHoverCard(Map<String, String?> item) {
-    return MouseRegion(
-      cursor: SystemMouseCursors.click,
-      onEnter: (_) => setState(() {}),
-      child: Tooltip(
-        message:
-            "${item["name"]}\nStatus: ${item["status"]}\nExpires: ${item["expiry"]}",
-        child: GestureDetector(
-          onTap: () => showItemDetails(item),
-          child: AnimatedContainer(
-            duration: const Duration(milliseconds: 200),
-            padding: const EdgeInsets.all(14),
+  void openNotifications() {
+    final overlay = Overlay.of(context);
+    if (overlay == null) return;
+
+    if (_notificationEntry != null) {
+      _notificationEntry!.remove();
+      _notificationEntry = null;
+      return;
+    }
+
+    final filtered = items.where((item) {
+      final status = item["status"] ?? "";
+      return status == "soon" || status == "expired";
+    }).toList();
+
+    _notificationEntry = OverlayEntry(
+      builder: (_) => Positioned(
+        top: 80,
+        right: 16,
+        child: Material(
+          child: Container(
+            width: 280,
+            padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
               color: Colors.white,
-              borderRadius: BorderRadius.circular(22),
+              borderRadius: BorderRadius.circular(14),
               boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.08),
-                  blurRadius: 10,
-                )
+                BoxShadow(color: Colors.black26, blurRadius: 10),
               ],
             ),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Icon(getIcon(item["name"]),
-                        color: const Color(0xFF00C853)),
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 10, vertical: 4),
+                const Text("Smart Alerts",
+                    style: TextStyle(fontWeight: FontWeight.bold)),
+                const SizedBox(height: 10),
+                if (filtered.isEmpty)
+                  const Text("No alerts 🎉")
+                else
+                  ...filtered.map((item) {
+                    final isSoon = item["status"] == "soon";
+                    final color =
+                        isSoon ? Colors.orange : Colors.red;
+
+                    return Container(
+                      margin: const EdgeInsets.only(bottom: 8),
+                      padding: const EdgeInsets.all(8),
                       decoration: BoxDecoration(
-                        color: getColor(item["status"]),
-                        borderRadius: BorderRadius.circular(20),
+                        color: color.withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(10),
                       ),
                       child: Text(
-                        (item["status"] ?? "").toUpperCase(),
-                        style: const TextStyle(
-                            color: Colors.white, fontSize: 10),
+                        "${item["name"]} → ${item["expiry"]}",
                       ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 10),
-                Text(item["name"] ?? "",
-                    style: const TextStyle(fontWeight: FontWeight.bold)),
-                Text("📦 ${item["produced"] ?? "--"}"),
-                Text("➕ ${item["added"] ?? "--"}"),
-                Text("⏳ ${item["expiry"] ?? "--"}"),
+                    );
+                  }),
               ],
             ),
           ),
         ),
       ),
     );
+
+    overlay.insert(_notificationEntry!);
   }
+
+  // ---------------- ITEM DETAILS ----------------
+
+  void showItemDetails(Map<String, String?> item) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => ItemDetails(item: item),
+      ),
+    );
+  }
+
+  // ---------------- UI CARD ----------------
+
+  Widget buildCard(Map<String, String?> item) {
+    return GestureDetector(
+      onTap: () => showItemDetails(item),
+      child: Container(
+        padding: const EdgeInsets.all(14),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(18),
+          boxShadow: [
+            BoxShadow(color: Colors.black12, blurRadius: 8),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Icon(getIcon(item["name"]),
+                    color: const Color(0xFF00C853)),
+                Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: getColor(item["status"]),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Text(
+                    (item["status"] ?? "").toUpperCase(),
+                    style: const TextStyle(
+                        color: Colors.white, fontSize: 10),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 10),
+            Text(item["name"] ?? "",
+                style: const TextStyle(fontWeight: FontWeight.bold)),
+            Text("⏳ ${item["expiry"] ?? "--"}"),
+          ],
+        ),
+      ),
+    );
+  }
+
+  // ---------------- BUILD ----------------
 
   @override
   Widget build(BuildContext context) {
@@ -276,19 +253,16 @@ class _HomeState extends State<Home> {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.transparent,
-        title: const Text(
-          "🥦 PantryPal ",
-          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
-        ),
+        title: const Text("🥦 PantryPal",
+            style: TextStyle(
+                color: Colors.black, fontWeight: FontWeight.bold)),
         actions: [
           IconButton(
-            icon: const Icon(Icons.notifications_none,
-                color: Color(0xFF00C853)),
-            onPressed: openNotifications,
+            icon: const Icon(Icons.notifications, color: Color(0xFF00C853)),
+            onPressed: goToAlerts,
           ),
           IconButton(
-            icon: const Icon(Icons.person_outline,
-                color: Color(0xFF00C853)),
+            icon: const Icon(Icons.person, color: Color(0xFF00C853)),
             onPressed: openProfile,
           ),
         ],
@@ -299,27 +273,15 @@ class _HomeState extends State<Home> {
           Container(
             margin: const EdgeInsets.all(16),
             padding: const EdgeInsets.all(20),
-            width: double.infinity,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(28),
+              borderRadius: BorderRadius.circular(24),
               gradient: const LinearGradient(
                 colors: [Color(0xFF00C853), Color(0xFF69F0AE)],
               ),
             ),
-            child: const Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text("Smart Pantry AI Dashboard",
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold)),
-                SizedBox(height: 6),
-                Text(
-                  "Track expiry • Reduce waste • Smart suggestions",
-                  style: TextStyle(color: Colors.white70),
-                ),
-              ],
+            child: const Text(
+              "Smart Pantry Dashboard",
+              style: TextStyle(color: Colors.white, fontSize: 18),
             ),
           ),
 
@@ -327,15 +289,14 @@ class _HomeState extends State<Home> {
             child: GridView.builder(
               padding: const EdgeInsets.all(16),
               itemCount: items.length,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              gridDelegate:
+                  const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
                 crossAxisSpacing: 14,
                 mainAxisSpacing: 14,
                 childAspectRatio: 1.3,
               ),
-              itemBuilder: (_, i) {
-                return buildHoverCard(items[i]);
-              },
+              itemBuilder: (_, i) => buildCard(items[i]),
             ),
           ),
         ],
@@ -352,11 +313,17 @@ class _HomeState extends State<Home> {
         selectedItemColor: const Color(0xFF00C853),
         onTap: (i) {
           setState(() => selectedIndex = i);
+
           if (i == 1) goToRecipes();
+          if (i == 2) goToAlerts();
         },
         items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.kitchen), label: "Pantry"),
-          BottomNavigationBarItem(icon: Icon(Icons.restaurant_menu), label: "Recipes"),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.kitchen), label: "Pantry"),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.restaurant_menu), label: "Recipes"),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.notifications), label: "Alerts"),
         ],
       ),
     );
