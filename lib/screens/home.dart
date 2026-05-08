@@ -59,7 +59,7 @@ class _HomeState extends State<Home> {
   void goToAddItem() {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (_) => const addItem()),
+      MaterialPageRoute(builder: (_) => const AddItem()),
     );
   }
 
