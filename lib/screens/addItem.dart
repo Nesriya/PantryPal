@@ -1,3 +1,4 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
 
 class AddItem extends StatefulWidget {
@@ -8,9 +9,23 @@ class AddItem extends StatefulWidget {
 }
 
 class _AddItemState extends State<AddItem> {
-  final TextEditingController nameController = TextEditingController();
-  final TextEditingController producedController = TextEditingController();
-  final TextEditingController expiryController = TextEditingController();
+  final TextEditingController nameController =
+      TextEditingController();
+
+  final TextEditingController producedController =
+      TextEditingController();
+
+  final TextEditingController expiryController =
+      TextEditingController();
+
+  final TextEditingController quantityController =
+      TextEditingController();
+
+  final TextEditingController locationController =
+      TextEditingController();
+
+  final Color primaryGreen = const Color(0xFF2D6A4F);
+  final Color lightMint = const Color(0xFFD8F3DC);
 
   String selectedCategory = "General";
 
@@ -27,223 +42,503 @@ class _AddItemState extends State<AddItem> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // ✅ BACKGROUND IMAGE ADDED HERE
-      body: Container(
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage(""),
-            fit: BoxFit.cover,
+      body: Stack(
+        children: [
+
+          // BACKGROUND IMAGE
+          Positioned.fill(
+            child: Image.asset(
+              'assets/p2.jpg',
+              fit: BoxFit.cover,
+              errorBuilder: (context, error, stackTrace) {
+                return Container(
+                  color: primaryGreen,
+                );
+              },
+            ),
           ),
-        ),
 
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            children: [
+          // DARK OVERLAY
+          Positioned.fill(
+            child: Container(
+              color: Colors.black.withOpacity(0.45),
+            ),
+          ),
 
-              const SizedBox(height: 50),
-
-              // HEADER CARD
-              Container(
-                width: double.infinity,
-                padding: const EdgeInsets.all(22),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(28),
-                  gradient: const LinearGradient(
-                    colors: [Color(0xFF00C853), Color(0xFF69F0AE)],
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.green.withOpacity(0.25),
-                      blurRadius: 20,
-                      offset: const Offset(0, 8),
-                    ),
-                  ],
+          SafeArea(
+            child: Center(
+              child: Container(
+                constraints: const BoxConstraints(
+                  maxWidth: 700,
                 ),
-                child: const Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "🥦 Add New Pantry Item",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold,
+
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 10,
+                ),
+
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+
+                      // TOP BAR
+                      Row(
+                        mainAxisAlignment:
+                            MainAxisAlignment.spaceBetween,
+                        children: [
+
+                          Row(
+                            children: [
+                              Icon(
+                                Icons.eco_rounded,
+                                color: lightMint,
+                                size: 30,
+                              ),
+
+                              const SizedBox(width: 10),
+
+                              const Text(
+                                "Add Item",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 26,
+                                  fontWeight: FontWeight.w900,
+                                ),
+                              ),
+                            ],
+                          ),
+
+                          _buildGlassCircleIcon(
+                            Icons.person_outline,
+                          ),
+                        ],
                       ),
-                    ),
-                    SizedBox(height: 8),
-                    Text(
-                      "Track expiry dates and reduce food waste easily.",
-                      style: TextStyle(color: Colors.white70),
-                    ),
-                  ],
-                ),
-              ),
 
-              const SizedBox(height: 30),
+                      const SizedBox(height: 28),
 
-              // ITEM NAME
-              buildInputCard(
-                child: TextField(
-                  controller: nameController,
-                  decoration: const InputDecoration(
-                    border: InputBorder.none,
-                    hintText: "Item Name",
-                    prefixIcon: Icon(
-                      Icons.fastfood,
-                      color: Color(0xFF00C853),
-                    ),
-                  ),
-                ),
-              ),
+                      // HEADER CARD
+                      _buildGlassContainer(
+                        borderRadius: 30,
+                        padding: const EdgeInsets.all(22),
+                        containerColor:
+                            primaryGreen.withOpacity(0.7),
 
-              const SizedBox(height: 18),
+                        child: Row(
+                          children: [
 
-              // CATEGORY
-              buildInputCard(
-                child: DropdownButtonFormField<String>(
-                  value: selectedCategory,
-                  decoration: const InputDecoration(
-                    border: InputBorder.none,
-                    prefixIcon: Icon(
-                      Icons.category,
-                      color: Color(0xFF00C853),
-                    ),
-                  ),
-                  items: categories.map((category) {
-                    return DropdownMenuItem(
-                      value: category,
-                      child: Text(category),
-                    );
-                  }).toList(),
-                  onChanged: (value) {
-                    setState(() {
-                      selectedCategory = value!;
-                    });
-                  },
-                ),
-              ),
+                            Container(
+                              padding: const EdgeInsets.all(14),
+                              decoration: BoxDecoration(
+                                color:
+                                    Colors.white.withOpacity(0.15),
+                                borderRadius:
+                                    BorderRadius.circular(18),
+                              ),
+                              child: const Icon(
+                                Icons.add_box_rounded,
+                                color: Colors.white,
+                                size: 34,
+                              ),
+                            ),
 
-              const SizedBox(height: 18),
+                            const SizedBox(width: 18),
 
-              // PRODUCTION DATE
-              buildInputCard(
-                child: TextField(
-                  controller: producedController,
-                  readOnly: true,
-                  decoration: const InputDecoration(
-                    border: InputBorder.none,
-                    hintText: "Production Date",
-                    prefixIcon: Icon(
-                      Icons.production_quantity_limits,
-                      color: Color(0xFF00C853),
-                    ),
-                  ),
-                  onTap: () async {
-                    DateTime? pickedDate = await showDatePicker(
-                      context: context,
-                      initialDate: DateTime.now(),
-                      firstDate: DateTime(2020),
-                      lastDate: DateTime(2030),
-                    );
+                            const Expanded(
+                              child: Column(
+                                crossAxisAlignment:
+                                    CrossAxisAlignment.start,
+                                children: [
 
-                    if (pickedDate != null) {
-                      producedController.text =
-                          "${pickedDate.day}/${pickedDate.month}/${pickedDate.year}";
-                    }
-                  },
-                ),
-              ),
+                                  Text(
+                                    "Add Pantry Product",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 21,
+                                      fontWeight:
+                                          FontWeight.bold,
+                                    ),
+                                  ),
 
-              const SizedBox(height: 18),
+                                  SizedBox(height: 6),
 
-              // EXPIRY DATE
-              buildInputCard(
-                child: TextField(
-                  controller: expiryController,
-                  readOnly: true,
-                  decoration: const InputDecoration(
-                    border: InputBorder.none,
-                    hintText: "Expiry Date",
-                    prefixIcon: Icon(
-                      Icons.calendar_month,
-                      color: Color(0xFF00C853),
-                    ),
-                  ),
-                  onTap: () async {
-                    DateTime? pickedDate = await showDatePicker(
-                      context: context,
-                      initialDate: DateTime.now(),
-                      firstDate: DateTime.now(),
-                      lastDate: DateTime(2035),
-                    );
-
-                    if (pickedDate != null) {
-                      expiryController.text =
-                          "${pickedDate.day}/${pickedDate.month}/${pickedDate.year}";
-                    }
-                  },
-                ),
-              ),
-
-              const SizedBox(height: 35),
-
-              // SAVE BUTTON
-              SizedBox(
-                width: double.infinity,
-                height: 58,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF00C853),
-                    elevation: 8,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(18),
-                    ),
-                  ),
-                  onPressed: () {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(
-                          "${nameController.text} added successfully 🎉",
+                                  Text(
+                                    "Track freshness and reduce waste efficiently.",
+                                    style: TextStyle(
+                                      color: Colors.white70,
+                                      fontSize: 13,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                    );
 
-                    Navigator.pop(context);
-                  },
-                  child: const Text(
-                    "Save Item",
-                    style: TextStyle(
-                      fontSize: 17,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
+                      const SizedBox(height: 28),
+
+                      // ITEM NAME
+                      _buildInputCard(
+                        child: TextField(
+                          controller: nameController,
+                          style: const TextStyle(
+                            color: Colors.white,
+                          ),
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            hintText: "Item Name",
+                            hintStyle: TextStyle(
+                              color:
+                                  Colors.white.withOpacity(0.55),
+                            ),
+                            prefixIcon: Icon(
+                              Icons.fastfood_rounded,
+                              color: lightMint,
+                            ),
+                          ),
+                        ),
+                      ),
+
+                      const SizedBox(height: 18),
+
+                      // CATEGORY
+                      _buildInputCard(
+                        child:
+                            DropdownButtonFormField<String>(
+                          dropdownColor: primaryGreen,
+                          value: selectedCategory,
+                          style: const TextStyle(
+                            color: Colors.white,
+                          ),
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            prefixIcon: Icon(
+                              Icons.category_rounded,
+                              color: lightMint,
+                            ),
+                          ),
+                          items: categories.map((category) {
+                            return DropdownMenuItem(
+                              value: category,
+                              child: Text(category),
+                            );
+                          }).toList(),
+                          onChanged: (value) {
+                            setState(() {
+                              selectedCategory = value!;
+                            });
+                          },
+                        ),
+                      ),
+
+                      const SizedBox(height: 18),
+
+                      // QUANTITY
+                      _buildInputCard(
+                        child: TextField(
+                          controller: quantityController,
+                          style: const TextStyle(
+                            color: Colors.white,
+                          ),
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            hintText: "Quantity",
+                            hintStyle: TextStyle(
+                              color:
+                                  Colors.white.withOpacity(0.55),
+                            ),
+                            prefixIcon: Icon(
+                              Icons.inventory_2_outlined,
+                              color: lightMint,
+                            ),
+                          ),
+                        ),
+                      ),
+
+                      const SizedBox(height: 18),
+
+                      // STORAGE LOCATION
+                      _buildInputCard(
+                        child: TextField(
+                          controller: locationController,
+                          style: const TextStyle(
+                            color: Colors.white,
+                          ),
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            hintText: "Storage Location",
+                            hintStyle: TextStyle(
+                              color:
+                                  Colors.white.withOpacity(0.55),
+                            ),
+                            prefixIcon: Icon(
+                              Icons.location_on_outlined,
+                              color: lightMint,
+                            ),
+                          ),
+                        ),
+                      ),
+
+                      const SizedBox(height: 18),
+
+                      // PRODUCTION DATE
+                      _buildInputCard(
+                        child: TextField(
+                          controller: producedController,
+                          readOnly: true,
+                          style: const TextStyle(
+                            color: Colors.white,
+                          ),
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            hintText: "Production Date",
+                            hintStyle: TextStyle(
+                              color:
+                                  Colors.white.withOpacity(0.55),
+                            ),
+                            prefixIcon: Icon(
+                              Icons.event_available_outlined,
+                              color: lightMint,
+                            ),
+                          ),
+                          onTap: () async {
+                            DateTime? pickedDate =
+                                await showDatePicker(
+                              context: context,
+                              initialDate:
+                                  DateTime.now(),
+                              firstDate: DateTime(2020),
+                              lastDate: DateTime(2035),
+                            );
+
+                            if (pickedDate != null) {
+                              producedController.text =
+                                  "${pickedDate.day}/${pickedDate.month}/${pickedDate.year}";
+                            }
+                          },
+                        ),
+                      ),
+
+                      const SizedBox(height: 18),
+
+                      // EXPIRY DATE
+                      _buildInputCard(
+                        child: TextField(
+                          controller: expiryController,
+                          readOnly: true,
+                          style: const TextStyle(
+                            color: Colors.white,
+                          ),
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            hintText: "Expiry Date",
+                            hintStyle: TextStyle(
+                              color:
+                                  Colors.white.withOpacity(0.55),
+                            ),
+                            prefixIcon: Icon(
+                              Icons.calendar_month_outlined,
+                              color: lightMint,
+                            ),
+                          ),
+                          onTap: () async {
+                            DateTime? pickedDate =
+                                await showDatePicker(
+                              context: context,
+                              initialDate:
+                                  DateTime.now(),
+                              firstDate:
+                                  DateTime.now(),
+                              lastDate: DateTime(2035),
+                            );
+
+                            if (pickedDate != null) {
+                              expiryController.text =
+                                  "${pickedDate.day}/${pickedDate.month}/${pickedDate.year}";
+                            }
+                          },
+                        ),
+                      ),
+
+                      const SizedBox(height: 32),
+
+                      // SAVE BUTTON
+                      SizedBox(
+                        width: double.infinity,
+                        height: 62,
+                        child: ElevatedButton(
+                          style:
+                              ElevatedButton.styleFrom(
+                            backgroundColor: lightMint,
+                            elevation: 0,
+                            shape:
+                                RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.circular(
+                                22,
+                              ),
+                            ),
+                          ),
+
+                          onPressed: () {
+
+                            ScaffoldMessenger.of(
+                              context,
+                            ).showSnackBar(
+                              SnackBar(
+                                backgroundColor:
+                                    primaryGreen,
+                                content: Text(
+                                  "${nameController.text} added successfully 🎉",
+                                ),
+                              ),
+                            );
+
+                            Navigator.pop(context);
+                          },
+
+                          child: Row(
+                            mainAxisAlignment:
+                                MainAxisAlignment.center,
+                            children: [
+
+                              Icon(
+                                Icons.save_rounded,
+                                color: primaryGreen,
+                              ),
+
+                              const SizedBox(width: 10),
+
+                              Text(
+                                "Save Item",
+                                style: TextStyle(
+                                  color: primaryGreen,
+                                  fontSize: 18,
+                                  fontWeight:
+                                      FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+
+                      const SizedBox(height: 25),
+
+                      // SMART TIP CARD
+                      _buildGlassContainer(
+                        borderRadius: 22,
+                        padding: const EdgeInsets.all(18),
+
+                        child: Row(
+                          children: [
+
+                            Icon(
+                              Icons.auto_awesome,
+                              color: lightMint,
+                            ),
+
+                            const SizedBox(width: 12),
+
+                            const Expanded(
+                              child: Text(
+                                "Smart Tip: Add products immediately after shopping for accurate expiry tracking.",
+                                style: TextStyle(
+                                  color: Colors.white70,
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+
+                      const SizedBox(height: 20),
+                    ],
                   ),
                 ),
               ),
-
-              const SizedBox(height: 20),
-            ],
+            ),
           ),
+        ],
+      ),
+    );
+  }
+
+  // INPUT CARD
+  Widget _buildInputCard({
+    required Widget child,
+  }) {
+    return _buildGlassContainer(
+      borderRadius: 20,
+      padding: const EdgeInsets.symmetric(
+        horizontal: 14,
+      ),
+      child: child,
+    );
+  }
+
+  // GLASS CONTAINER
+  Widget _buildGlassContainer({
+    required double borderRadius,
+    required Widget child,
+    EdgeInsetsGeometry? padding,
+    Color? containerColor,
+  }) {
+    return ClipRRect(
+      borderRadius:
+          BorderRadius.circular(borderRadius),
+
+      child: BackdropFilter(
+        filter: ImageFilter.blur(
+          sigmaX: 15,
+          sigmaY: 15,
+        ),
+
+        child: Container(
+          padding: padding,
+
+          decoration: BoxDecoration(
+            color: containerColor ??
+                Colors.white.withOpacity(0.12),
+
+            borderRadius:
+                BorderRadius.circular(borderRadius),
+
+            border: Border.all(
+              color:
+                  Colors.white.withOpacity(0.2),
+            ),
+          ),
+
+          child: child,
         ),
       ),
     );
   }
 
-  Widget buildInputCard({required Widget child}) {
+  // GLASS ICON
+  Widget _buildGlassCircleIcon(
+    IconData icon,
+  ) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 14),
+      padding: const EdgeInsets.all(10),
+
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.06),
-            blurRadius: 12,
-          ),
-        ],
+        shape: BoxShape.circle,
+
+        color: Colors.white.withOpacity(0.1),
+
+        border: Border.all(
+          color: Colors.white.withOpacity(0.2),
+        ),
       ),
-      child: child,
+
+      child: Icon(
+        icon,
+        color: Colors.white,
+        size: 22,
+      ),
     );
   }
 }
