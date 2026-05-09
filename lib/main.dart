@@ -3,7 +3,7 @@ import 'dart:ui';
 
 import 'authentication/login.dart'; 
 import 'authentication/signup.dart';
-
+//main
 void main() {
   runApp(const MainApp());
 }
@@ -29,7 +29,7 @@ class WelcomeScreen extends StatefulWidget {
 }
 
 class _WelcomeScreenState extends State<WelcomeScreen> {
-  // Strictly false so tips are hidden on page load
+ 
   bool _showTip = false; 
   int _tipIndex = 0;
 
@@ -93,7 +93,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
 
                   const Spacer(flex: 1), 
 
-                  // --- FEATURES SECTION ---
+                  
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 40),
                     child: Column(
@@ -148,7 +148,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                           ],
                         ),
 
-                        // Tip Pop-up: Only displayed if clicked
+                        
                         if (_showTip)
                           Positioned(
                             bottom: 55, 
