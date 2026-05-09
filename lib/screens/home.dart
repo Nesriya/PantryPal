@@ -19,7 +19,7 @@ class _HomeState extends State<Home> {
   final Color primaryGreen = const Color(0xFF2D6A4F);
   final Color lightMint = const Color(0xFFD8F3DC);
 
-  // Updated items with actual static dates instead of null
+  // items
   final List<Map<String, String>> items = [
     {"name": "Milk", "status": "soon", "qty": "1L", "loc": "Fridge", "expiry": "May 12", "prod": "May 05"},
     {"name": "Eggs", "status": "safe", "qty": "12pk", "loc": "Fridge", "expiry": "May 20", "prod": "May 01"},
@@ -33,7 +33,7 @@ class _HomeState extends State<Home> {
     return "$expired Expired • $soon Soon";
   }
 
-  // --- OVERLAY & HOVER LOGIC ---
+  // some hover features
   void _showTopRightPopup({required Widget content}) {
     _closeOverlay();
     setState(() => isDimmed = true);
@@ -309,7 +309,7 @@ class _HomeState extends State<Home> {
                 _buildHoverAction(child: const Icon(Icons.grid_view_rounded, color: Colors.white)),
                 _buildHoverAction(
                   scale: 1.2,
-                  onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const addItem())),
+                  onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const AddItem())),
                   child: CircleAvatar(backgroundColor: lightMint, radius: 24, child: Icon(Icons.add_rounded, color: primaryGreen, size: 28)),
                 ),
                 _buildHoverAction(onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const Recipes())), child: const Icon(Icons.restaurant_menu_rounded, color: Colors.white)),
