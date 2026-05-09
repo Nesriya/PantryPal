@@ -48,9 +48,14 @@ class _AddItemState extends State<AddItem> {
           // BACKGROUND IMAGE
           Positioned.fill(
             child: Image.asset(
-              'assets/p2.jpg',
+              'assets/p1.jpg',
               fit: BoxFit.cover,
-              errorBuilder: (context, error, stackTrace) {
+
+              // improves image quality
+              filterQuality: FilterQuality.high,
+
+              errorBuilder:
+                  (context, error, stackTrace) {
                 return Container(
                   color: primaryGreen,
                 );
@@ -61,7 +66,7 @@ class _AddItemState extends State<AddItem> {
           // DARK OVERLAY
           Positioned.fill(
             child: Container(
-              color: Colors.black.withOpacity(0.45),
+              color: Colors.black.withOpacity(0.25),
             ),
           ),
 
@@ -72,7 +77,8 @@ class _AddItemState extends State<AddItem> {
                   maxWidth: 700,
                 ),
 
-                padding: const EdgeInsets.symmetric(
+                padding:
+                    const EdgeInsets.symmetric(
                   horizontal: 20,
                   vertical: 10,
                 ),
@@ -84,25 +90,31 @@ class _AddItemState extends State<AddItem> {
                       // TOP BAR
                       Row(
                         mainAxisAlignment:
-                            MainAxisAlignment.spaceBetween,
+                            MainAxisAlignment
+                                .spaceBetween,
                         children: [
 
                           Row(
                             children: [
+
                               Icon(
                                 Icons.eco_rounded,
                                 color: lightMint,
                                 size: 30,
                               ),
 
-                              const SizedBox(width: 10),
+                              const SizedBox(
+                                  width: 10),
 
                               const Text(
                                 "Add Item",
                                 style: TextStyle(
-                                  color: Colors.white,
+                                  color:
+                                      Colors.white,
                                   fontSize: 26,
-                                  fontWeight: FontWeight.w900,
+                                  fontWeight:
+                                      FontWeight
+                                          .w900,
                                 ),
                               ),
                             ],
@@ -119,53 +131,81 @@ class _AddItemState extends State<AddItem> {
                       // HEADER CARD
                       _buildGlassContainer(
                         borderRadius: 30,
-                        padding: const EdgeInsets.all(22),
+
+                        padding:
+                            const EdgeInsets.all(
+                                22),
+
                         containerColor:
-                            primaryGreen.withOpacity(0.7),
+                            primaryGreen
+                                .withOpacity(0.6),
 
                         child: Row(
                           children: [
 
                             Container(
-                              padding: const EdgeInsets.all(14),
-                              decoration: BoxDecoration(
-                                color:
-                                    Colors.white.withOpacity(0.15),
+                              padding:
+                                  const EdgeInsets
+                                      .all(14),
+
+                              decoration:
+                                  BoxDecoration(
+                                color: Colors.white
+                                    .withOpacity(
+                                        0.15),
+
                                 borderRadius:
-                                    BorderRadius.circular(18),
+                                    BorderRadius
+                                        .circular(
+                                            18),
                               ),
+
                               child: const Icon(
-                                Icons.add_box_rounded,
-                                color: Colors.white,
+                                Icons
+                                    .add_box_rounded,
+                                color:
+                                    Colors.white,
                                 size: 34,
                               ),
                             ),
 
-                            const SizedBox(width: 18),
+                            const SizedBox(
+                                width: 18),
 
                             const Expanded(
                               child: Column(
                                 crossAxisAlignment:
-                                    CrossAxisAlignment.start,
+                                    CrossAxisAlignment
+                                        .start,
+
                                 children: [
 
                                   Text(
                                     "Add Pantry Product",
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 21,
+                                    style:
+                                        TextStyle(
+                                      color: Colors
+                                          .white,
+                                      fontSize:
+                                          21,
                                       fontWeight:
-                                          FontWeight.bold,
+                                          FontWeight
+                                              .bold,
                                     ),
                                   ),
 
-                                  SizedBox(height: 6),
+                                  SizedBox(
+                                      height:
+                                          6),
 
                                   Text(
                                     "Track freshness and reduce waste efficiently.",
-                                    style: TextStyle(
-                                      color: Colors.white70,
-                                      fontSize: 13,
+                                    style:
+                                        TextStyle(
+                                      color: Colors
+                                          .white70,
+                                      fontSize:
+                                          13,
                                     ),
                                   ),
                                 ],
@@ -180,19 +220,33 @@ class _AddItemState extends State<AddItem> {
                       // ITEM NAME
                       _buildInputCard(
                         child: TextField(
-                          controller: nameController,
-                          style: const TextStyle(
+                          controller:
+                              nameController,
+
+                          style:
+                              const TextStyle(
                             color: Colors.white,
                           ),
-                          decoration: InputDecoration(
-                            border: InputBorder.none,
-                            hintText: "Item Name",
-                            hintStyle: TextStyle(
-                              color:
-                                  Colors.white.withOpacity(0.55),
+
+                          decoration:
+                              InputDecoration(
+                            border:
+                                InputBorder.none,
+
+                            hintText:
+                                "Item Name",
+
+                            hintStyle:
+                                TextStyle(
+                              color: Colors
+                                  .white
+                                  .withOpacity(
+                                      0.55),
                             ),
+
                             prefixIcon: Icon(
-                              Icons.fastfood_rounded,
+                              Icons
+                                  .fastfood_rounded,
                               color: lightMint,
                             ),
                           ),
@@ -204,28 +258,44 @@ class _AddItemState extends State<AddItem> {
                       // CATEGORY
                       _buildInputCard(
                         child:
-                            DropdownButtonFormField<String>(
-                          dropdownColor: primaryGreen,
-                          value: selectedCategory,
-                          style: const TextStyle(
+                            DropdownButtonFormField<
+                                String>(
+                          dropdownColor:
+                              primaryGreen,
+
+                          value:
+                              selectedCategory,
+
+                          style:
+                              const TextStyle(
                             color: Colors.white,
                           ),
-                          decoration: InputDecoration(
-                            border: InputBorder.none,
+
+                          decoration:
+                              InputDecoration(
+                            border:
+                                InputBorder.none,
+
                             prefixIcon: Icon(
-                              Icons.category_rounded,
+                              Icons
+                                  .category_rounded,
                               color: lightMint,
                             ),
                           ),
-                          items: categories.map((category) {
+
+                          items: categories
+                              .map((category) {
                             return DropdownMenuItem(
                               value: category,
-                              child: Text(category),
+                              child:
+                                  Text(category),
                             );
                           }).toList(),
+
                           onChanged: (value) {
                             setState(() {
-                              selectedCategory = value!;
+                              selectedCategory =
+                                  value!;
                             });
                           },
                         ),
@@ -236,19 +306,33 @@ class _AddItemState extends State<AddItem> {
                       // QUANTITY
                       _buildInputCard(
                         child: TextField(
-                          controller: quantityController,
-                          style: const TextStyle(
+                          controller:
+                              quantityController,
+
+                          style:
+                              const TextStyle(
                             color: Colors.white,
                           ),
-                          decoration: InputDecoration(
-                            border: InputBorder.none,
-                            hintText: "Quantity",
-                            hintStyle: TextStyle(
-                              color:
-                                  Colors.white.withOpacity(0.55),
+
+                          decoration:
+                              InputDecoration(
+                            border:
+                                InputBorder.none,
+
+                            hintText:
+                                "Quantity",
+
+                            hintStyle:
+                                TextStyle(
+                              color: Colors
+                                  .white
+                                  .withOpacity(
+                                      0.55),
                             ),
+
                             prefixIcon: Icon(
-                              Icons.inventory_2_outlined,
+                              Icons
+                                  .inventory_2_outlined,
                               color: lightMint,
                             ),
                           ),
@@ -260,19 +344,33 @@ class _AddItemState extends State<AddItem> {
                       // STORAGE LOCATION
                       _buildInputCard(
                         child: TextField(
-                          controller: locationController,
-                          style: const TextStyle(
+                          controller:
+                              locationController,
+
+                          style:
+                              const TextStyle(
                             color: Colors.white,
                           ),
-                          decoration: InputDecoration(
-                            border: InputBorder.none,
-                            hintText: "Storage Location",
-                            hintStyle: TextStyle(
-                              color:
-                                  Colors.white.withOpacity(0.55),
+
+                          decoration:
+                              InputDecoration(
+                            border:
+                                InputBorder.none,
+
+                            hintText:
+                                "Storage Location",
+
+                            hintStyle:
+                                TextStyle(
+                              color: Colors
+                                  .white
+                                  .withOpacity(
+                                      0.55),
                             ),
+
                             prefixIcon: Icon(
-                              Icons.location_on_outlined,
+                              Icons
+                                  .location_on_outlined,
                               color: lightMint,
                             ),
                           ),
@@ -284,35 +382,61 @@ class _AddItemState extends State<AddItem> {
                       // PRODUCTION DATE
                       _buildInputCard(
                         child: TextField(
-                          controller: producedController,
+                          controller:
+                              producedController,
+
                           readOnly: true,
-                          style: const TextStyle(
+
+                          style:
+                              const TextStyle(
                             color: Colors.white,
                           ),
-                          decoration: InputDecoration(
-                            border: InputBorder.none,
-                            hintText: "Production Date",
-                            hintStyle: TextStyle(
-                              color:
-                                  Colors.white.withOpacity(0.55),
+
+                          decoration:
+                              InputDecoration(
+                            border:
+                                InputBorder.none,
+
+                            hintText:
+                                "Production Date",
+
+                            hintStyle:
+                                TextStyle(
+                              color: Colors
+                                  .white
+                                  .withOpacity(
+                                      0.55),
                             ),
+
                             prefixIcon: Icon(
-                              Icons.event_available_outlined,
+                              Icons
+                                  .event_available_outlined,
                               color: lightMint,
                             ),
                           ),
+
                           onTap: () async {
-                            DateTime? pickedDate =
+                            DateTime?
+                                pickedDate =
                                 await showDatePicker(
                               context: context,
+
                               initialDate:
                                   DateTime.now(),
-                              firstDate: DateTime(2020),
-                              lastDate: DateTime(2035),
+
+                              firstDate:
+                                  DateTime(
+                                      2020),
+
+                              lastDate:
+                                  DateTime(
+                                      2035),
                             );
 
-                            if (pickedDate != null) {
-                              producedController.text =
+                            if (pickedDate !=
+                                null) {
+                              producedController
+                                  .text =
                                   "${pickedDate.day}/${pickedDate.month}/${pickedDate.year}";
                             }
                           },
@@ -324,36 +448,60 @@ class _AddItemState extends State<AddItem> {
                       // EXPIRY DATE
                       _buildInputCard(
                         child: TextField(
-                          controller: expiryController,
+                          controller:
+                              expiryController,
+
                           readOnly: true,
-                          style: const TextStyle(
+
+                          style:
+                              const TextStyle(
                             color: Colors.white,
                           ),
-                          decoration: InputDecoration(
-                            border: InputBorder.none,
-                            hintText: "Expiry Date",
-                            hintStyle: TextStyle(
-                              color:
-                                  Colors.white.withOpacity(0.55),
+
+                          decoration:
+                              InputDecoration(
+                            border:
+                                InputBorder.none,
+
+                            hintText:
+                                "Expiry Date",
+
+                            hintStyle:
+                                TextStyle(
+                              color: Colors
+                                  .white
+                                  .withOpacity(
+                                      0.55),
                             ),
+
                             prefixIcon: Icon(
-                              Icons.calendar_month_outlined,
+                              Icons
+                                  .calendar_month_outlined,
                               color: lightMint,
                             ),
                           ),
+
                           onTap: () async {
-                            DateTime? pickedDate =
+                            DateTime?
+                                pickedDate =
                                 await showDatePicker(
                               context: context,
+
                               initialDate:
                                   DateTime.now(),
+
                               firstDate:
                                   DateTime.now(),
-                              lastDate: DateTime(2035),
+
+                              lastDate:
+                                  DateTime(
+                                      2035),
                             );
 
-                            if (pickedDate != null) {
-                              expiryController.text =
+                            if (pickedDate !=
+                                null) {
+                              expiryController
+                                  .text =
                                   "${pickedDate.day}/${pickedDate.month}/${pickedDate.year}";
                             }
                           },
@@ -366,56 +514,71 @@ class _AddItemState extends State<AddItem> {
                       SizedBox(
                         width: double.infinity,
                         height: 62,
+
                         child: ElevatedButton(
                           style:
-                              ElevatedButton.styleFrom(
-                            backgroundColor: lightMint,
+                              ElevatedButton
+                                  .styleFrom(
+                            backgroundColor:
+                                lightMint,
+
                             elevation: 0,
+
                             shape:
                                 RoundedRectangleBorder(
                               borderRadius:
-                                  BorderRadius.circular(
-                                22,
-                              ),
+                                  BorderRadius
+                                      .circular(
+                                          22),
                             ),
                           ),
 
                           onPressed: () {
 
                             ScaffoldMessenger.of(
-                              context,
-                            ).showSnackBar(
+                                    context)
+                                .showSnackBar(
                               SnackBar(
                                 backgroundColor:
                                     primaryGreen,
+
                                 content: Text(
                                   "${nameController.text} added successfully 🎉",
                                 ),
                               ),
                             );
 
-                            Navigator.pop(context);
+                            Navigator.pop(
+                                context);
                           },
 
                           child: Row(
                             mainAxisAlignment:
-                                MainAxisAlignment.center,
+                                MainAxisAlignment
+                                    .center,
+
                             children: [
 
                               Icon(
-                                Icons.save_rounded,
-                                color: primaryGreen,
+                                Icons
+                                    .save_rounded,
+                                color:
+                                    primaryGreen,
                               ),
 
-                              const SizedBox(width: 10),
+                              const SizedBox(
+                                  width: 10),
 
                               Text(
                                 "Save Item",
-                                style: TextStyle(
-                                  color: primaryGreen,
+                                style:
+                                    TextStyle(
+                                  color:
+                                      primaryGreen,
                                   fontSize: 18,
                                   fontWeight:
-                                      FontWeight.bold,
+                                      FontWeight
+                                          .bold,
                                 ),
                               ),
                             ],
@@ -425,10 +588,13 @@ class _AddItemState extends State<AddItem> {
 
                       const SizedBox(height: 25),
 
-                      // SMART TIP CARD
+                      // SMART TIP
                       _buildGlassContainer(
                         borderRadius: 22,
-                        padding: const EdgeInsets.all(18),
+
+                        padding:
+                            const EdgeInsets.all(
+                                18),
 
                         child: Row(
                           children: [
@@ -438,13 +604,16 @@ class _AddItemState extends State<AddItem> {
                               color: lightMint,
                             ),
 
-                            const SizedBox(width: 12),
+                            const SizedBox(
+                                width: 12),
 
                             const Expanded(
                               child: Text(
                                 "Smart Tip: Add products immediately after shopping for accurate expiry tracking.",
-                                style: TextStyle(
-                                  color: Colors.white70,
+                                style:
+                                    TextStyle(
+                                  color: Colors
+                                      .white70,
                                   fontSize: 12,
                                 ),
                               ),
@@ -471,9 +640,12 @@ class _AddItemState extends State<AddItem> {
   }) {
     return _buildGlassContainer(
       borderRadius: 20,
-      padding: const EdgeInsets.symmetric(
+
+      padding:
+          const EdgeInsets.symmetric(
         horizontal: 14,
       ),
+
       child: child,
     );
   }
@@ -487,12 +659,15 @@ class _AddItemState extends State<AddItem> {
   }) {
     return ClipRRect(
       borderRadius:
-          BorderRadius.circular(borderRadius),
+          BorderRadius.circular(
+              borderRadius),
 
       child: BackdropFilter(
         filter: ImageFilter.blur(
-          sigmaX: 15,
-          sigmaY: 15,
+
+          // reduced blur for clarity
+          sigmaX: 5,
+          sigmaY: 5,
         ),
 
         child: Container(
@@ -500,14 +675,16 @@ class _AddItemState extends State<AddItem> {
 
           decoration: BoxDecoration(
             color: containerColor ??
-                Colors.white.withOpacity(0.12),
+                Colors.white
+                    .withOpacity(0.10),
 
             borderRadius:
-                BorderRadius.circular(borderRadius),
+                BorderRadius.circular(
+                    borderRadius),
 
             border: Border.all(
-              color:
-                  Colors.white.withOpacity(0.2),
+              color: Colors.white
+                  .withOpacity(0.18),
             ),
           ),
 
@@ -527,10 +704,12 @@ class _AddItemState extends State<AddItem> {
       decoration: BoxDecoration(
         shape: BoxShape.circle,
 
-        color: Colors.white.withOpacity(0.1),
+        color: Colors.white
+            .withOpacity(0.10),
 
         border: Border.all(
-          color: Colors.white.withOpacity(0.2),
+          color: Colors.white
+              .withOpacity(0.18),
         ),
       ),
 
