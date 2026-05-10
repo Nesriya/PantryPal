@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:project/main.dart';
 import 'dart:ui';
 import 'addItem.dart'; 
 import 'recipes.dart';
-//home
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -285,7 +285,22 @@ class _HomeState extends State<Home> {
         _profileRow(Icons.history, "Recent Activity"),
         _profileRow(Icons.settings, "Account Settings"),
         const SizedBox(height: 15),
-        TextButton.icon(onPressed: () {}, icon: const Icon(Icons.logout, color: Colors.redAccent, size: 18), label: const Text("Logout", style: TextStyle(color: Colors.redAccent))),
+        TextButton.icon(
+  onPressed: () {
+    _closeOverlay(); // closes popup
+
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (context) => const MainApp()),
+      (route) => false,
+    );
+  },
+  icon: const Icon(Icons.logout, color: Colors.redAccent, size: 18),
+  label: const Text(
+    "Logout",
+    style: TextStyle(color: Colors.redAccent),
+  ),
+),
       ],
     );
   }

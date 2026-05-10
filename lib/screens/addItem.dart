@@ -1,6 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
-
+import 'home.dart';
 class AddItem extends StatefulWidget {
   const AddItem({super.key});
 
@@ -120,9 +120,8 @@ class _AddItemState extends State<AddItem> {
                             ],
                           ),
 
-                          _buildGlassCircleIcon(
-                            Icons.person_outline,
-                          ),
+                          
+                          
                         ],
                       ),
 
@@ -548,8 +547,10 @@ class _AddItemState extends State<AddItem> {
                               ),
                             );
 
-                            Navigator.pop(
-                                context);
+                           Navigator.pushReplacement(
+  context,
+  MaterialPageRoute(builder: (context) => const Home()),
+);
                           },
 
                           child: Row(

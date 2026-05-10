@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'dart:ui';
 
-import 'authentication/login.dart'; 
+import 'authentication/login.dart';
 import 'authentication/signup.dart';
-//main
+
 void main() {
   runApp(const MainApp());
 }
@@ -29,8 +29,7 @@ class WelcomeScreen extends StatefulWidget {
 }
 
 class _WelcomeScreenState extends State<WelcomeScreen> {
- 
-  bool _showTip = false; 
+  bool _showTip = false;
   int _tipIndex = 0;
 
   final List<String> _tips = [
@@ -43,9 +42,9 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   void _handleHandClick() {
     setState(() {
       if (!_showTip) {
-        _showTip = true; 
+        _showTip = true;
       } else {
-        _tipIndex = (_tipIndex + 1) % _tips.length; 
+        _tipIndex = (_tipIndex + 1) % _tips.length;
       }
     });
   }
@@ -59,73 +58,76 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
         children: [
           Positioned.fill(
             child: Image.asset(
-              'assets/p2.jpg',
+              'assets/p2new.jpg',
               fit: BoxFit.cover,
             ),
           ),
+
           SafeArea(
             child: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const SizedBox(height: 60),
-                  
-                  Icon(Icons.eco_rounded, color: primaryGreen, size: 50),
-                  const SizedBox(height: 10),
-                  const Text(
-                    "PantryPal",
-                    style: TextStyle(
-                      fontSize: 52,
-                      fontWeight: FontWeight.w900,
-                      color: primaryGreen,
-                      letterSpacing: 2,
+              child: Padding(
+                // 🔥 moved whole screen slightly UP (clean layout fix)
+                padding: const EdgeInsets.only(bottom: 40),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const SizedBox(height: 20),
+
+                    // 🟢 LOGO (unchanged)
+                    Icon(Icons.eco_rounded, color: primaryGreen, size: 50),
+                    const SizedBox(height: 10),
+                    const Text(
+                      "PantryPal",
+                      style: TextStyle(
+                        fontSize: 52,
+                        fontWeight: FontWeight.w900,
+                        color: primaryGreen,
+                        letterSpacing: 2,
+                      ),
                     ),
-                  ),
-                  const Text(
-                    "ELEVATE YOUR KITCHEN",
-                    style: TextStyle(
-                      fontSize: 10, 
-                      fontWeight: FontWeight.bold, 
-                      color: Colors.black54, 
-                      letterSpacing: 5,
+                    const Text(
+                      "ELEVATE YOUR KITCHEN",
+                      style: TextStyle(
+                        fontSize: 10,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black54,
+                        letterSpacing: 5,
+                      ),
                     ),
-                  ),
 
-                  const Spacer(flex: 1), 
+                    const Spacer(flex: 1),
 
-                  
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 40),
-                    child: Column(
-                      children: [
-                        _buildFeatureRow(Icons.timer_outlined, "Track Expiration Dates"),
-                        const SizedBox(height: 12),
-                        _buildFeatureRow(Icons.receipt_long_outlined, "Smart Recipe Discovery"),
-                        const SizedBox(height: 12),
-                        _buildFeatureRow(Icons.analytics_outlined, "Reduce Food Waste"),
-                      ],
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 40),
+                      child: Column(
+                        children: [
+                          _buildFeatureRow(Icons.timer_outlined, "Track Expiration Dates"),
+                          const SizedBox(height: 12),
+                          _buildFeatureRow(Icons.receipt_long_outlined, "Smart Recipe Discovery"),
+                          const SizedBox(height: 12),
+                          _buildFeatureRow(Icons.analytics_outlined, "Reduce Food Waste"),
+                        ],
+                      ),
                     ),
-                  ),
 
-                  const SizedBox(height: 40), 
+                    const SizedBox(height: 35),
 
-                  // --- BUTTONS & HAND AREA (NUDGED RIGHT) ---
-                  Padding(
-                    padding: const EdgeInsets.only(left: 90), 
-                    child: Stack(
-                      clipBehavior: Clip.none, 
+                    // 🔥 BUTTONS AREA (clean centered layout)
+                    Stack(
+                      clipBehavior: Clip.none,
+                      alignment: Alignment.center,
                       children: [
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.center, 
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
+                             const SizedBox(width: 60),
                             _buildPillButton(
                               label: "LOG IN",
                               isPrimary: true,
                               color: primaryGreen,
-                              // Navigates to Login page
                               onPressed: () => Navigator.push(
-                                context, 
-                                MaterialPageRoute(builder: (context) => const Login())
+                                context,
+                                MaterialPageRoute(builder: (context) => const LoginPage()),
                               ),
                             ),
                             const SizedBox(width: 12),
@@ -133,14 +135,13 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                               label: "SIGN UP",
                               isPrimary: false,
                               color: primaryGreen,
-                              // Navigates to Signup page
                               onPressed: () => Navigator.push(
-                                context, 
-                                MaterialPageRoute(builder: (context) => const Signup())
+                                context,
+                                MaterialPageRoute(builder: (context) => const SignupPage()),
                               ),
                             ),
                             const SizedBox(width: 15),
-                            
+
                             GestureDetector(
                               onTap: _handleHandClick,
                               child: _buildBouncingHand(primaryGreen),
@@ -148,19 +149,18 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                           ],
                         ),
 
-                        
                         if (_showTip)
                           Positioned(
-                            bottom: 55, 
-                            left: 285, 
+                            bottom: 55,
+                            right: 15,
                             child: _buildMessageBubble(_tips[_tipIndex], primaryGreen),
                           ),
                       ],
                     ),
-                  ),
 
-                  const Spacer(flex: 2), 
-                ],
+                    const Spacer(flex: 2),
+                  ],
+                ),
               ),
             ),
           ),
@@ -187,7 +187,11 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
           Icon(Icons.touch_app, color: color, size: 28),
           const Text(
             "Click for tips",
-            style: TextStyle(fontSize: 7, fontWeight: FontWeight.bold, color: Colors.black54),
+            style: TextStyle(
+              fontSize: 7,
+              fontWeight: FontWeight.bold,
+              color: Colors.black54,
+            ),
           ),
         ],
       ),
@@ -203,23 +207,20 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
           opacity: val,
           child: Transform.scale(
             scale: val,
-            alignment: Alignment.bottomLeft, 
             child: Container(
               constraints: const BoxConstraints(maxWidth: 140),
               padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
                 color: Colors.white.withOpacity(0.7),
-                borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(15),
-                  topRight: Radius.circular(15),
-                  bottomRight: Radius.circular(15),
-                  bottomLeft: Radius.circular(2), 
-                ),
-                boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 10)],
+                borderRadius: BorderRadius.circular(15),
               ),
               child: Text(
                 tip,
-                style: const TextStyle(fontSize: 9, color: Colors.black87, fontWeight: FontWeight.w600),
+                style: const TextStyle(
+                  fontSize: 9,
+                  color: Colors.black87,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
             ),
           ),
@@ -236,7 +237,11 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
         const SizedBox(width: 10),
         Text(
           text,
-          style: const TextStyle(color: Colors.black87, fontSize: 13, fontWeight: FontWeight.w500),
+          style: const TextStyle(
+            color: Colors.black87,
+            fontSize: 13,
+            fontWeight: FontWeight.w500,
+          ),
         ),
       ],
     );
@@ -261,7 +266,6 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             borderRadius: BorderRadius.circular(20),
             side: BorderSide(color: color, width: 1.2),
           ),
-          padding: EdgeInsets.zero,
         ),
         child: Text(
           label,
